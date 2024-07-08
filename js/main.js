@@ -1,335 +1,223 @@
-jQuery(document).ready(function($) {
+/**
+* Template Name: Medilab
+* Updated: Mar 10 2023 with Bootstrap v5.2.3
+* Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
+*/
+(function() {
+  "use strict";
 
-	'use strict';
+  /**
+   * Easy selector helper function
+   */
+  const select = (el, all = false) => {
+    el = el.trim()
+    if (all) {
+      return [...document.querySelectorAll(el)]
+    } else {
+      return document.querySelector(el)
+    }
+  }
 
-        $(function() {
-  
-          // Vars
-          var modBtn  = $('#modBtn'),
-              modal   = $('#modal'),
-              close   = modal.find('.close'),
-              modContent = modal.find('.modal-content');
-          
-          // open modal when click on open modal button 
-          modBtn.on('click', function() {
-            modal.css('display', 'block');
-            modContent.removeClass('modal-animated-out').addClass('modal-animated-in');
-          });
-          
-          // close modal when click on close button or somewhere out the modal content 
-          $(document).on('click', function(e) {
-            var target = $(e.target);
-            if(target.is(modal) || target.is(close)) {
-              modContent.removeClass('modal-animated-in').addClass('modal-animated-out').delay(300).queue(function(next) {
-                modal.css('display', 'none');
-                next();
-              });
-            }
-          });
-          
-        });
+  /**
+   * Easy event listener function
+   */
+  const on = (type, el, listener, all = false) => {
+    let selectEl = select(el, all)
+    if (selectEl) {
+      if (all) {
+        selectEl.forEach(e => e.addEventListener(type, listener))
+      } else {
+        selectEl.addEventListener(type, listener)
+      }
+    }
+  }
 
-      (function($) {
-        $(".accordion > li:eq(0) a")
-          .addClass("active")
-          .next()
-          .slideDown();
+  /**
+   * Easy on scroll event listener 
+   */
+  const onscroll = (el, listener) => {
+    el.addEventListener('scroll', listener)
+  }
 
-        $(".accordion a").click(function(j) {
-          var dropDown = $(this)
-            .closest("li")
-            .find("p");
+  /**
+   * Navbar links active state on scroll
+   */
+  let navbarlinks = select('#navbar .scrollto', true)
+  const navbarlinksActive = () => {
+    let position = window.scrollY + 200
+    navbarlinks.forEach(navbarlink => {
+      if (!navbarlink.hash) return
+      let section = select(navbarlink.hash)
+      if (!section) return
+      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
+        navbarlink.classList.add('active')
+      } else {
+        navbarlink.classList.remove('active')
+      }
+    })
+  }
+  window.addEventListener('load', navbarlinksActive)
+  onscroll(document, navbarlinksActive)
 
-          $(this)
-            .closest(".accordion")
-            .find("p")
-            .not(dropDown)
-            .slideUp();
+  /**
+   * Scrolls to an element with header offset
+   */
+  const scrollto = (el) => {
+    let header = select('#header')
+    let offset = header.offsetHeight
 
-          if ($(this).hasClass("active")) {
-            $(this).removeClass("active");
-          } else {
-            $(this)
-              .closest(".accordion")
-              .find("a.active")
-              .removeClass("active");
-            $(this).addClass("active");
-          }
+    let elementPos = select(el).offsetTop
+    window.scrollTo({
+      top: elementPos - offset,
+      behavior: 'smooth'
+    })
+  }
 
-          dropDown.stop(false, true).slideToggle();
-
-          j.preventDefault();
-        });
-      })(jQuery);
-
-
-      $('.owl-carousel').owlCarousel({
-          loop:true,
-          margin:30,
-          responsiveClass:true,
-          responsive:{
-              0:{
-                  items:1,
-                  nav:true
-              },
-              500:{
-                  items:2,
-                  nav:false
-              },
-              800:{
-                  items:3,
-                  nav:false
-              },
-              1000:{
-                  items:4,
-                  nav:true,
-                  loop:false
-              },
-              1200:{
-                  items:5,
-                  nav:true,
-                  loop:false
-              },
-              1500:{
-                  items:6,
-                  nav:true,
-                  loop:false
-              }
-          }
-      })
-
-      
-      $('#form-submit .date').datepicker({
-      });
-
-      /**
-     * jquery.responsive-menu.js
-     * jQuery + CSS Multi Level Responsive Menu
-     */
-
-    jQuery(function($) {
-      $.fn.responsivenav = function(args) {
-        // Default settings
-        var defaults = {
-          responsive: true,
-          width: 993,                           // Responsive width
-          button: $(this).attr('id')+'-button', // Menu button id
-          animation: {                          // Menu animation
-          effect: 'slide',                    // Accepts 'slide' or 'fade'
-          show: 150,
-          hide: 100
-          },
-          selected: 'selected',                 // Selected class
-          arrow: 'downarrow'                    // Dropdown arrow class
-        };
-        var settings = $.extend(defaults, args);
-        
-        // Initialize the menu and the button
-        init($(this).attr('id'), settings.button);
-        
-        function init(menuid, buttonid) {
-          setupMenu(menuid, buttonid);
-          // Add a handler function for the resize and orientationchange event
-          $(window).bind('resize orientationchange', function(){ resizeMenu(menuid, buttonid); });
-          // Trigger initial resize
-          resizeMenu(menuid, buttonid);
+  /**
+   * Toggle .header-scrolled class to #header when page is scrolled
+   */
+  let selectHeader = select('#header')
+  let selectTopbar = select('#topbar')
+  if (selectHeader) {
+    const headerScrolled = () => {
+      if (window.scrollY > 100) {
+        selectHeader.classList.add('header-scrolled')
+        if (selectTopbar) {
+          selectTopbar.classList.add('topbar-scrolled')
         }
-        
-        function setupMenu(menuid, buttonid) {
-          var $mainmenu = $('#'+menuid+'>ul');
-          
-          var $headers = $mainmenu.find("ul").parent();
-          // Add dropdown arrows
-          $headers.each(function(i) {
-            var $curobj = $(this);
-            $curobj.children('a:eq(0)').append('<span class="'+settings.arrow+'"></span>');
-          });
-          
-          if ( settings.responsive ) {
-            // Menu button click event
-            // Displays top-level menu items
-            $('#'+buttonid).click(function(e) {
-              e.preventDefault();
-              
-              if ( isSelected($('#'+buttonid)) ) {
-                // Close menu
-                collapseChildren('#'+menuid);
-                animateHide($('#'+menuid), $('#'+buttonid));
-              } else {
-                // Open menu
-                animateShow($('#'+menuid), $('#'+buttonid));
-              }
-            });
-          }
+      } else {
+        selectHeader.classList.remove('header-scrolled')
+        if (selectTopbar) {
+          selectTopbar.classList.remove('topbar-scrolled')
         }
-        
-        function resizeMenu(menuid, buttonid) {
-          var $ww = document.body.clientWidth;
-          
-          // Add mobile class to elements for CSS use
-          // instead of relying on media-query support
-          if ( $ww > settings.width || !settings.responsive) {
-            $('#'+menuid).removeClass('mobile');
-            $('#'+buttonid).removeClass('mobile');
-          } else {
-            $('#'+menuid).addClass('mobile');
-            $('#'+buttonid).addClass('mobile');
-          }
-          
-          var $headers = $('#'+menuid+'>ul').find('ul').parent();
-          
-          $headers.each(function(i) {
-            var $curobj = $(this);
-            var $link = $curobj.children('a:eq(0)');
-            var $subul = $curobj.find('ul:eq(0)');
-            
-            // Unbind events
-            $curobj.unbind('mouseenter mouseleave');
-            $link.unbind('click');
-            animateHide($curobj.children('ul:eq(0)'));
-            
-            if ( $ww > settings.width  || !settings.responsive ) {
-              // Full menu
-              $curobj.hover(function(e) {
-                var $targetul = $(this).children('ul:eq(0)');
-                
-                var $dims = { w: this.offsetWidth,
-                              h: this.offsetHeight,
-                              subulw: $subul.outerWidth(),
-                              subulh: $subul.outerHeight()
-                            };
-                var $istopheader = $curobj.parents('ul').length == 1 ? true : false;
-                $subul.css($istopheader ? {} : { top: 0 });
-                var $offsets = { left: $(this).offset().left, 
-                                 top: $(this).offset().top
-                               };
-                var $menuleft = $istopheader ? 0 : $dims.w;
-                $menuleft = ( $offsets.left + $menuleft + $dims.subulw > $(window).width() ) ? ( $istopheader ? -$dims.subulw + $dims.w : -$dims.w ) : $menuleft;
-                $targetul.css({ left:$menuleft+'px', 
-                               width:$dims.subulw+'px' 
-                              });
-                
-                animateShow($targetul);
-              },
-              function(e) {
-                var $targetul = $(this).children('ul:eq(0)');
-                animateHide($targetul);
-              });
-            } else {
-              // Compact menu
-              $link.click(function(e) {
-                e.preventDefault();
+      }
+    }
+    window.addEventListener('load', headerScrolled)
+    onscroll(document, headerScrolled)
+  }
 
-                var $targetul = $curobj.children('ul:eq(0)');
-                if ( isSelected($curobj) ) {
-                  collapseChildren($targetul);
-                  animateHide($targetul);
-                } else {
-                  //collapseSiblings($curobj);
-                  animateShow($targetul);
-                }
-              });
-            }
-          });
-          
-          collapseChildren('#'+menuid);
-          
-          if ( settings.responsive && isSelected($('#'+buttonid)) ) {
-            //collapseChildren('#'+menuid);
-            $('#'+menuid).hide();
-            $('#'+menuid).removeAttr('style');
-            $('#'+buttonid).removeClass(settings.selected);
-          }
-        }
-        
-        function collapseChildren(elementid) {
-          // Closes all submenus of the specified element
-          var $headers = $(elementid).find('ul');
-          $headers.each(function(i) {
-            if ( isSelected($(this).parent()) ) {
-              animateHide($(this));
-            }
-          });
-        }
-        
-        function collapseSiblings(element) {
-          var $siblings = element.siblings('li');
-          $siblings.each(function(i) {
-            collapseChildren($(this));
-          });
-        }
-        
-        function isSelected(element) {
-          return element.hasClass(settings.selected);
-        }
-        
-        function animateShow(menu, button) {
-          if ( !button ) { var button = menu.parent(); }
-          
-          button.addClass(settings.selected);
-          
-          if ( settings.animation.effect == 'fade' ) {
-            menu.fadeIn(settings.animation.show);
-          } else if ( settings.animation.effect == 'slide' ) {
-            menu.slideDown(settings.animation.show);
-          } else {
-            menu.show();
-            menu.removeClass('hide');
-          }
-        }
-        
-        function animateHide(menu, button) {
-          if ( !button ) { var button = menu.parent(); }
-          
-          if ( settings.animation.effect == 'fade' ) {
-            menu.fadeOut(settings.animation.hide, function() { 
-              menu.removeAttr('style');
-              button.removeClass(settings.selected);
-            });
-          } else if ( settings.animation.effect == 'slide' ) {
-            menu.slideUp(settings.animation.hide, function() { 
-              menu.removeAttr('style');
-              button.removeClass(settings.selected);
-            });
-          } else {
-            menu.hide();
-            menu.addClass('hide');
-            menu.removeAttr('style');
-            button.removeClass(settings.selected);
-          }
-        }
-      };
+  /**
+   * Back to top button
+   */
+  let backtotop = select('.back-to-top')
+  if (backtotop) {
+    const toggleBacktotop = () => {
+      if (window.scrollY > 100) {
+        backtotop.classList.add('active')
+      } else {
+        backtotop.classList.remove('active')
+      }
+    }
+    window.addEventListener('load', toggleBacktotop)
+    onscroll(document, toggleBacktotop)
+  }
+
+  /**
+   * Mobile nav toggle
+   */
+  on('click', '.mobile-nav-toggle', function(e) {
+    select('#navbar').classList.toggle('navbar-mobile')
+    this.classList.toggle('bi-list')
+    this.classList.toggle('bi-x')
+  })
+
+  /**
+   * Mobile nav dropdowns activate
+   */
+  on('click', '.navbar .dropdown > a', function(e) {
+    if (select('#navbar').classList.contains('navbar-mobile')) {
+      e.preventDefault()
+      this.nextElementSibling.classList.toggle('dropdown-active')
+    }
+  }, true)
+
+  /**
+   * Scrool with ofset on links with a class name .scrollto
+   */
+  on('click', '.scrollto', function(e) {
+    if (select(this.hash)) {
+      e.preventDefault()
+
+      let navbar = select('#navbar')
+      if (navbar.classList.contains('navbar-mobile')) {
+        navbar.classList.remove('navbar-mobile')
+        let navbarToggle = select('.mobile-nav-toggle')
+        navbarToggle.classList.toggle('bi-list')
+        navbarToggle.classList.toggle('bi-x')
+      }
+      scrollto(this.hash)
+    }
+  }, true)
+
+  /**
+   * Scroll with ofset on page load with hash links in the url
+   */
+  window.addEventListener('load', () => {
+    if (window.location.hash) {
+      if (select(window.location.hash)) {
+        scrollto(window.location.hash)
+      }
+    }
+  });
+
+  /**
+   * Preloader
+   */
+  let preloader = select('#preloader');
+  if (preloader) {
+    window.addEventListener('load', () => {
+      preloader.remove()
     });
+  }
 
-    jQuery(function ($) {
-      $('#primary-nav').responsivenav();
-      $('#top-nav').responsivenav({responsive:false});
-    });
-	
-	// on click event on all anchors with a class of scrollTo
-        $('a.scrollTo').on('click', function(){
-          
-          // data-scrollTo = section scrolling to name
-          var scrollTo = $(this).attr('data-scrollTo');
-          
-          
-          // toggle active class on and off. added 1/24/17
-          $( "a.scrollTo" ).each(function() {
-            if(scrollTo == $(this).attr('data-scrollTo')){
-              $(this).addClass('active');
-            }else{
-              $(this).removeClass('active');
-            }
-          });
-          
-          
-          // animate and scroll to the sectin 
-          $('body, html').animate({
-            
-            // the magic - scroll to section
-            "scrollTop": $('#'+scrollTo).offset().top
-          }, 1000 );
-          return false;
-          
-        })
-});
+  /**
+   * Initiate glightbox 
+   */
+  const glightbox = GLightbox({
+    selector: '.glightbox'
+  });
+
+  /**
+   * Initiate Gallery Lightbox 
+   */
+  const galelryLightbox = GLightbox({
+    selector: '.galelry-lightbox'
+  });
+
+  /**
+   * Testimonials slider
+   */
+  new Swiper('.testimonials-slider', {
+    speed: 600,
+    loop: true,
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false
+    },
+    slidesPerView: 'auto',
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'bullets',
+      clickable: true
+    },
+    breakpoints: {
+      320: {
+        slidesPerView: 1,
+        spaceBetween: 20
+      },
+
+      1200: {
+        slidesPerView: 2,
+        spaceBetween: 20
+      }
+    }
+  });
+
+  /**
+   * Initiate Pure Counter 
+   */
+  new PureCounter();
+
+})()
