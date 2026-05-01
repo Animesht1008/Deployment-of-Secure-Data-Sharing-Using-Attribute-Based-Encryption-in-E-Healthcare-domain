@@ -1,0 +1,123 @@
+:root {
+  --brand-blue: #0b5ed7;
+  --brand-dark: #0a2a66;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app-shell {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.page-home {
+  background-image: linear-gradient(rgba(1, 13, 44, 0.65), rgba(1, 13, 44, 0.55)), url("/images/home-bg.jpg");
+}
+
+.page-login {
+  background-image: linear-gradient(rgba(4, 27, 71, 0.7), rgba(4, 27, 71, 0.6)), url("/images/login-bg.jpg");
+}
+
+.page-signup {
+  background-image: linear-gradient(rgba(8, 39, 35, 0.72), rgba(8, 39, 35, 0.62)), url("/images/signup-bg.jpg");
+}
+
+.topbar {
+  background: rgba(2, 8, 28, 0.4);
+  backdrop-filter: blur(3px);
+}
+
+.topbar .navbar-brand {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.topbar .nav-link {
+  color: #fff;
+  font-weight: 600;
+  padding: 0.7rem 0.9rem;
+}
+
+.topbar .nav-link:hover {
+  color: #d9e8ff;
+}
+
+.hover-dropdown {
+  position: relative;
+}
+
+.hover-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 170px;
+  border: none;
+  border-radius: 0.6rem;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  z-index: 1000;
+}
+
+.hover-dropdown:hover .hover-dropdown-menu {
+  display: block;
+}
+
+.hover-dropdown-menu a {
+  display: block;
+  padding: 0.5rem 0.8rem;
+  color: #18356b;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hover-dropdown-menu a:hover {
+  background: #edf3ff;
+}
+
+.hero-box {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  color: #fff;
+}
+
+.hero-title {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+}
+
+.auth-card {
+  max-width: 560px;
+  margin: 3rem auto 0;
+  border-radius: 1rem;
+  border: none;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+
+.auth-card .card-header {
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-dark));
+  color: #fff;
+  font-weight: 700;
+}
+
+.auth-card .form-control {
+  border-radius: 0.55rem;
+  padding: 0.65rem 0.75rem;
+}
+
+.auth-card .btn-primary {
+  border-radius: 0.6rem;
+  font-weight: 600;
+}
+
+.main-content {
+  padding-bottom: 2rem;
+}

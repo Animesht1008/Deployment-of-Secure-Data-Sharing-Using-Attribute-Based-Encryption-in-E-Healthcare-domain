@@ -1,11 +1,24 @@
-<%- include("partials/header", { title: role + " Login" }) %>
-<div class="card shadow-sm">
-  <div class="card-body">
-    <h4 class="mb-3 text-capitalize"><%= role %> Login</h4>
+<%- include("partials/header", { title: role + " Login", bodyClass: "page-login" }) %>
+<div class="card auth-card">
+  <div class="card-header text-capitalize"><%= role %> Login</div>
+  <div class="card-body p-4">
     <form method="post" action="/login/<%= role %>" class="row g-3">
-      <div class="col-12"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
-      <div class="col-12"><input type="password" name="password" class="form-control" placeholder="Password" required></div>
-      <div class="col-12"><button class="btn btn-primary">Login</button></div>
+      <div class="col-12">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+      </div>
+      <div class="col-12 d-grid">
+        <button class="btn btn-primary">Login</button>
+      </div>
+      <% if (role === "patient" || role === "doctor") { %>
+        <div class="col-12 text-center">
+          <small>Need an account? <a href="/signup/<%= role %>">Signup here</a></small>
+        </div>
+      <% } %>
     </form>
   </div>
 </div>
