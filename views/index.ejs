@@ -1,0 +1,38 @@
+<%- include("partials/header", { title: "Home" }) %>
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5>Patient</h5>
+        <a href="/signup/patient" class="btn btn-primary btn-sm">Signup</a>
+        <a href="/login/patient" class="btn btn-outline-primary btn-sm">Login</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5>Doctor</h5>
+        <a href="/signup/doctor" class="btn btn-primary btn-sm">Signup</a>
+        <a href="/login/doctor" class="btn btn-outline-primary btn-sm">Login</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5>Trusted Authority</h5>
+        <a href="/login/ta" class="btn btn-warning btn-sm">Login</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5>Cloud Admin</h5>
+        <a href="/login/cloud" class="btn btn-secondary btn-sm">Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include("partials/footer") %>

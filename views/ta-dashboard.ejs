@@ -1,0 +1,53 @@
+<%- include("partials/header", { title: "TA Dashboard" }) %>
+<h4>Trusted Authority Dashboard</h4>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h5>Pending Doctor Approvals</h5>
+    <table class="table">
+      <thead><tr><th>Name</th><th>Email</th><th>Department</th><th>Action</th></tr></thead>
+      <tbody>
+      <% pendingDoctors.forEach((d) => { %>
+        <tr>
+          <td><%= d.name %></td>
+          <td><%= d.email %></td>
+          <td><%= d.department || "-" %></td>
+          <td>
+            <form method="post" action="/ta/doctor/<%= d._id %>/approve">
+              <button class="btn btn-success btn-sm">Approve</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5>Pending Access Requests</h5>
+    <table class="table">
+      <thead><tr><th>Doctor</th><th>Patient</th><th>File</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+      <% waitingRequests.forEach((r) => { %>
+        <tr>
+          <td><%= r.doctor?.name || "-" %></td>
+          <td><%= r.patient?.name || "-" %></td>
+          <td><%= r.file?.filename || "-" %></td>
+          <td><%= r.status %></td>
+          <td>
+            <form method="post" action="/ta/request/<%= r._id %>/approve" class="d-inline">
+              <button class="btn btn-success btn-sm">Approve</button>
+            </form>
+            <form method="post" action="/ta/request/<%= r._id %>/reject" class="d-inline">
+              <button class="btn btn-danger btn-sm">Reject</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%- include("partials/footer") %>

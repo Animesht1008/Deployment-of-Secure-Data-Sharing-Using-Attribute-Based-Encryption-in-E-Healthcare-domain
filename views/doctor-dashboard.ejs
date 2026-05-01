@@ -1,0 +1,65 @@
+<%- include("partials/header", { title: "Doctor Dashboard" }) %>
+<h4>Doctor Dashboard</h4>
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <form method="get" action="/doctor/dashboard" class="row g-2">
+      <div class="col-md-4">
+        <input name="patientName" class="form-control" placeholder="Search patient name" value="<%= patientName %>">
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary">Search</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h5>Available Files (Department: <%= currentUser.department || "-" %>)</h5>
+    <table class="table">
+      <thead><tr><th>Patient</th><th>File</th><th>Department</th><th>Action</th></tr></thead>
+      <tbody>
+      <% files.forEach((f) => { %>
+        <tr>
+          <td><%= f.patientName %></td>
+          <td><%= f.filename %></td>
+          <td><%= f.department || "-" %></td>
+          <td>
+            <form method="post" action="/doctor/request/<%= f._id %>">
+              <button class="btn btn-warning btn-sm">Request Access</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5>Your Requests</h5>
+    <table class="table">
+      <thead><tr><th>File</th><th>Status</th><th>Download</th></tr></thead>
+      <tbody>
+      <% requests.forEach((r) => { %>
+        <tr>
+          <td><%= r.file?.filename || "-" %></td>
+          <td><%= r.status %></td>
+          <td>
+            <% if (r.status === "approved") { %>
+              <form method="get" action="/doctor/download/<%= r._id %>" class="d-flex gap-2">
+                <input name="key" class="form-control form-control-sm" placeholder="Access key">
+                <button class="btn btn-success btn-sm">Download</button>
+              </form>
+            <% } else { %>
+              -
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%- include("partials/footer") %>

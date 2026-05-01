@@ -1,0 +1,21 @@
+<%- include("partials/header", { title: "Cloud Dashboard" }) %>
+<h4>Cloud Dashboard</h4>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5>Encrypted Files</h5>
+    <table class="table">
+      <thead><tr><th>Patient</th><th>Filename</th><th>Department</th><th>Uploaded</th></tr></thead>
+      <tbody>
+      <% files.forEach((f) => { %>
+        <tr>
+          <td><%= f.patientName %></td>
+          <td><%= f.filename %></td>
+          <td><%= f.department || "-" %></td>
+          <td><%= new Date(f.createdAt).toLocaleString() %></td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%- include("partials/footer") %>

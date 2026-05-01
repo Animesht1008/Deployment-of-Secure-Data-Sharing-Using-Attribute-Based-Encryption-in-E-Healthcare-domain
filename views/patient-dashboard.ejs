@@ -1,0 +1,63 @@
+<%- include("partials/header", { title: "Patient Dashboard" }) %>
+<h4>Patient Dashboard</h4>
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5>Upload Health File</h5>
+        <form method="post" action="/patient/upload" enctype="multipart/form-data" class="row g-2">
+          <div class="col-12"><input type="file" class="form-control" name="file" required></div>
+          <div class="col-md-6"><input name="department" class="form-control" placeholder="Department"></div>
+          <div class="col-md-6"><input name="age" class="form-control" placeholder="Age"></div>
+          <div class="col-md-6"><input name="bloodGroup" class="form-control" placeholder="Blood Group"></div>
+          <div class="col-md-6"><input name="heartRate" class="form-control" placeholder="Heart Rate"></div>
+          <div class="col-md-6"><input name="height" class="form-control" placeholder="Height"></div>
+          <div class="col-md-6"><input name="weight" class="form-control" placeholder="Weight"></div>
+          <div class="col-md-6"><input name="bloodPressure" class="form-control" placeholder="Blood Pressure"></div>
+          <div class="col-md-6"><input name="bloodSugar" class="form-control" placeholder="Blood Sugar"></div>
+          <div class="col-12"><button class="btn btn-primary">Upload & Encrypt</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5>Your Files</h5>
+        <ul class="list-group">
+          <% files.forEach((f) => { %>
+            <li class="list-group-item d-flex justify-content-between">
+              <span><%= f.filename %> (<%= f.department || "-" %>)</span>
+              <span class="badge text-bg-secondary">Key: <%= f.accessKey %></span>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm mt-4">
+  <div class="card-body">
+    <h5>Doctor Requests</h5>
+    <table class="table">
+      <thead><tr><th>Doctor</th><th>File</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+      <% requests.forEach((r) => { %>
+        <tr>
+          <td><%= r.doctor?.name || "-" %></td>
+          <td><%= r.file?.filename || "-" %></td>
+          <td><%= r.status %></td>
+          <td>
+            <% if (r.status === "waiting") { %>
+              <form method="post" action="/patient/requests/<%= r._id %>/approve" class="d-inline"><button class="btn btn-success btn-sm">Approve</button></form>
+              <form method="post" action="/patient/requests/<%= r._id %>/reject" class="d-inline"><button class="btn btn-danger btn-sm">Reject</button></form>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%- include("partials/footer") %>

@@ -1,0 +1,12 @@
+<%- include("partials/header", { title: role + " Login" }) %>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h4 class="mb-3 text-capitalize"><%= role %> Login</h4>
+    <form method="post" action="/login/<%= role %>" class="row g-3">
+      <div class="col-12"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
+      <div class="col-12"><input type="password" name="password" class="form-control" placeholder="Password" required></div>
+      <div class="col-12"><button class="btn btn-primary">Login</button></div>
+    </form>
+  </div>
+</div>
+<%- include("partials/footer") %>
